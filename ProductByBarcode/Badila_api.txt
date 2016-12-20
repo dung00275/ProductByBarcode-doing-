@@ -1,0 +1,159 @@
+- Endpoint Stagging: http://badila.co:2314/web-service/services
+- Content-type: application/json
+
+Version: 0.1-dev
+
+1.	Test WS
+	Method: GET
+	Url: /hello
+	Response (string): Hi! 20/12/2016 00:02:29 
+
+--
+
+2.	Check Barcode: 
+	Method: GET
+	Url: /checkBarcode?barcode={barcocde}
+	Response (JSON array)
+	Ex: 
+	Url: http://badila.co:2314/web-service/services/checkBarcode?barcode=022334545453_1
+	Response: 
+		[
+		  {
+		    "id": "112",
+		    "barcode": "022334545453_1",
+		    "quantity": null,
+		    "price": null,
+		    "selling_price": null,
+		    "data": null,
+		    "created_at": null,
+		    "created_by": null,
+		    "updated_at": null,
+		    "updated_by": null,
+		    "name": null,
+		    "description": null
+		  }
+		]
+
+--
+
+3.	Create product
+   	Desc: Website will create product to get a product Id.
+   	Url: /processProduct?newProduct=1&barcode=2222&action=new
+   	Params were required:
+   		- newProduct (string) = 1 
+   		- barcode (string) = {barcode} [get from above step]
+   		- action (string) = new
+
+   	Response (JSON)
+	   {
+		  "productId": 113,
+		  "barcode": "2222",
+		  "type": "new"
+		}
+
+	Ex: http://badila.co:2314/web-service/services/addNewProduct?newProduct=1&barcode=2222&action=new
+	Response:
+		{
+		  "productId": 113,
+		  "barcode": "2222",
+		  "type": "new"
+		}
+
+--
+
+4.	Update product
+   	Desc: Get product barcode then update images and quantity
+   	Url: /processProduct?newProduct=1&barcode=2222&action=update
+   	Params were required:
+   		- newProduct (string) = 1 
+   		- barcode (string) = {barcode} [get from above step]
+   		- action (string) = update [To notify server serach product by barcode then return ID]
+
+   	Response (JSON)
+	   {
+		  "productId": 113,
+		  "barcode": "2222",
+		  "type": "new"
+		}
+
+	Ex: http://badila.co:2314/web-service/services/addNewProduct?newProduct=1&barcode=2222&action=new
+	Response:
+		{
+		  "productId": 113,
+		  "barcode": "2222",
+		  "type": "new"
+		}
+
+--
+
+5.	Get quantity type
+	Desc: Get config of system quantity type, just speed up when count items
+	Method: GET
+	Url: /getQuantityTypes
+	Response (JSON)
+		[
+		  {
+		    "name": "Hộp",
+		    "value": "1"
+		  },
+		  {
+		    "name": "Thùng (5 hộp)",
+		    "value": "5"
+		  },
+		  {
+		    "name": "Thùng (10 hộp)",
+		    "value": "10"
+		  }
+		]
+
+--
+
+6.	Upload image
+	Desc: Upload image to server, stream file to server
+	Method: POST
+	Url: /saveImages
+	Body: This is depended on what kind of platform you are using, here is the example of request was composed from cliend and how server process
+	- Client
+		// Compose option
+		var options = {
+			fileKey: "file", // This is very important, server will detect based on this key
+			fileName: filename,
+			chunkedMode: false,
+			mimeType: "multipart/form-data",
+			params : {'fileName': filename, 'productId' : $scope.productId}
+		};
+
+        // Add image to server
+        // imageUrl: tmp path was stored on device, ex: file:///images/XXXX.jpg
+        $cordovaFileTransfer.upload(serverUrl + "/saveImages", imageUrl, options).then(function(result) {
+           $scope.imageIds.push(parseInt(result.response)); // Save image id to array
+        });
+
+    RESPONSE: (string) image id
+
+--
+
+7.	Save product
+	Desc: Update product based on quantity, images id
+	Method: POST
+	URL: /updateProduct
+	Params:
+		- images (array): images id were got when save image, b/c images have to sent to server first to get image id, section 6: Upload image, has to call before call 7, if don't have image, leave it an empty array.
+		- productId (int)
+		- quantity (int)
+		- quantityType (string): Get from one among Quantities type dropdown when call service /getQuantityTypes
+	Body (JSON):
+		{
+		  "images": [
+		    112,
+		    222
+		  ],
+		  "productId": 11,
+		  "quantity": 2,
+		  "quantityType": "10"
+		}
+
+
+
+
+
