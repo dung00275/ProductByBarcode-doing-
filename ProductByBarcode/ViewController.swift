@@ -38,6 +38,7 @@ class ViewController: BaseController {
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Scan Barcode"
         barcodeViewModel.controller = self
+        setAnimateForStatusLabel()
     }
     
     fileprivate func commonInit() {
@@ -63,9 +64,21 @@ class ViewController: BaseController {
             
         } else {
             showAlertError(message: "Can't setup camera. Please check in Setting").bindNext({ [weak self](_) in
-                self?.lblStatus.text = "Can't Open Caamera"
+                self?.lblStatus.text = "Can't Open Camera"
             }).addDisposableTo(disposeBag)
         }
+    }
+    
+    func setAnimateForStatusLabel() {
+        
+        let anim = CABasicAnimation(keyPath: "opacity")
+        anim.fromValue = 1
+        anim.toValue = 0
+        anim.repeatCount = Float.infinity
+        anim.duration = 0.4
+        anim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        self.lblStatus.layer.add(anim, forKey: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
