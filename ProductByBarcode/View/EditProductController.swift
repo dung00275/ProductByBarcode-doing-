@@ -117,6 +117,7 @@ class EditProductController: UITableViewController, HandlerErrorController {
     }
     
     private func showAlertChoose() -> Observable<ChooseImageType> {
+        self.view.endEditing(true)
         return Observable.create({[unowned self] (r) -> Disposable in
             let actionSheet = UIAlertController(title: "Input Image", message: nil, preferredStyle: .actionSheet)
             let actionCamera = UIAlertAction(title: ChooseImageType.camera.description, style: .default) { (_) in
