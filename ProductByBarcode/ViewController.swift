@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
-
+import ALLoadingView
 class ViewController: BaseController {
 
     fileprivate var reader: QRCodeReader!
@@ -17,7 +17,7 @@ class ViewController: BaseController {
     
     @IBOutlet weak var torchButton: UIButton!
     @IBOutlet weak var lblStatus: UILabel!
-    fileprivate let disposeBag = DisposeBag()
+    
     fileprivate var code: String? {
         didSet {
             if code != nil {
@@ -25,18 +25,19 @@ class ViewController: BaseController {
                 
                 barcodeViewModel.checkBarcode(code: code).subscribe(onNext: { (_) in
                     print("abc")
-                }, onError: { (err) in
-                    print(err)
+                }, onError: { [weak self](err) in
+                    self?.showErrorWith(error: err)
                 }).addDisposableTo(disposeBag)
             }
         }
     }
-    let barcodeViewModel = BarcodeViewModel()
+    var barcodeViewModel = BarcodeViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Scan Barcode"
+        barcodeViewModel.controller = self
     }
     
     fileprivate func commonInit() {
@@ -76,6 +77,12 @@ class ViewController: BaseController {
         if !reader.isRunning {
             reader.startScanning()
         }
+    }
+    
+    
+    override func handlerError() {
+        print("Handler error")
+        
     }
     
     override func didReceiveMemoryWarning() {

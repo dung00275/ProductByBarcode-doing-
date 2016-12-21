@@ -1,7 +1,11 @@
 - Endpoint Stagging: http://badila.co:2314/web-service/services
 - Content-type: application/json
 
-Version: 0.1-dev
+Version: 0.1.1-dev
+Update note:
+- 22/12/2016: Add method for Create product and update product
+- 21/12/2016: Init document 
+
 
 1.	Test WS
 	Method: GET
@@ -38,6 +42,7 @@ Version: 0.1-dev
 
 3.	Create product
    	Desc: Website will create product to get a product Id.
+   	Method: GET
    	Url: /processProduct?newProduct=1&barcode=2222&action=new
    	Params were required:
    		- newProduct (string) = 1 
@@ -63,6 +68,7 @@ Version: 0.1-dev
 
 4.	Update product
    	Desc: Get product barcode then update images and quantity
+   	Method: GET
    	Url: /processProduct?newProduct=1&barcode=2222&action=update
    	Params were required:
    		- newProduct (string) = 1 

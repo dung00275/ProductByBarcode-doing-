@@ -10,9 +10,18 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import ALLoadingView
 
-class BaseController: UIViewController {
-    func showAlertError(message: String?) -> Observable<Void> {
+extension UIViewController: TrackActivityProtocol{
+}
+
+public protocol HandlerErrorController {
+    func showAlertError(message: String?) -> Observable<Void>
+}
+
+public extension HandlerErrorController where Self: UIViewController {
+    
+    public func showAlertError(message: String?) -> Observable<Void> {
         return Observable.create({ [unowned self](r) -> Disposable in
             let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
                 r.onNext()
@@ -30,5 +39,33 @@ class BaseController: UIViewController {
             }
         })
     }
+}
+
+
+class BaseController: UIViewController, HandlerErrorController {
     
+    var disposeBag: DisposeBag! = DisposeBag()
+    private lazy var loadingManager = ALLoadingView.manager
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.trackLoading.asDriver().drive(onNext: { [weak self](isLoading) in
+            guard let weakSelf = self else {
+                return
+            }
+            
+            isLoading ? weakSelf.loadingManager.showLoadingView(ofType: .messageWithIndicator, windowMode: .fullscreen) : weakSelf.loadingManager.hideLoadingView()
+            
+        }).addDisposableTo(disposeBag)
+        
+    }
+    
+    func showErrorWith(error: Error) {
+        showAlertError(message: error.localizedDescription).subscribeOn(MainScheduler.instance).bindNext {[weak self] in
+            self?.handlerError()
+            }.addDisposableTo(disposeBag)
+    }
+    
+    public func handlerError() {
+        
+    }
 }

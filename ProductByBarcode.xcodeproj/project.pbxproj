@@ -21,6 +21,11 @@
 		CFA894B91E09021D001C70B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFA894B71E09021D001C70B5 /* LaunchScreen.storyboard */; };
 		CFA894C41E090320001C70B5 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA894C31E090320001C70B5 /* Helper.swift */; };
 		CFA894C61E09032B001C70B5 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA894C51E09032B001C70B5 /* Config.swift */; };
+		CFCFE3DA1E0A251700A317F2 /* ChooseImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3D91E0A251700A317F2 /* ChooseImageCell.swift */; };
+		CFCFE3DC1E0A25C400A317F2 /* ChooseTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3DB1E0A25C400A317F2 /* ChooseTypeCell.swift */; };
+		CFCFE3DE1E0A267900A317F2 /* InputQuantityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3DD1E0A267900A317F2 /* InputQuantityCell.swift */; };
+		CFCFE3E21E0A291C00A317F2 /* EditProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3E11E0A291C00A317F2 /* EditProductController.swift */; };
+		CFCFE3EE1E0A57E700A317F2 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3ED1E0A57E700A317F2 /* ImageCollectionViewCell.swift */; };
 		E7910043AA1E9E4CB9969AFC /* Pods_ProductByBarcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CEE9B696725266910869550 /* Pods_ProductByBarcode.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +48,11 @@
 		CFA894BA1E09021D001C70B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFA894C31E090320001C70B5 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		CFA894C51E09032B001C70B5 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		CFCFE3D91E0A251700A317F2 /* ChooseImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseImageCell.swift; sourceTree = "<group>"; };
+		CFCFE3DB1E0A25C400A317F2 /* ChooseTypeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseTypeCell.swift; sourceTree = "<group>"; };
+		CFCFE3DD1E0A267900A317F2 /* InputQuantityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputQuantityCell.swift; sourceTree = "<group>"; };
+		CFCFE3E11E0A291C00A317F2 /* EditProductController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProductController.swift; sourceTree = "<group>"; };
+		CFCFE3ED1E0A57E700A317F2 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E4FBEA6DAACD98CF81ED933A /* Pods-ProductByBarcode.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProductByBarcode.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProductByBarcode/Pods-ProductByBarcode.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,6 +161,11 @@
 			children = (
 				CF5ED62E1E090A8400B98E43 /* QRCodeReader.swift */,
 				CF5ED6301E09117100B98E43 /* BaseController.swift */,
+				CFCFE3D91E0A251700A317F2 /* ChooseImageCell.swift */,
+				CFCFE3DB1E0A25C400A317F2 /* ChooseTypeCell.swift */,
+				CFCFE3DD1E0A267900A317F2 /* InputQuantityCell.swift */,
+				CFCFE3E11E0A291C00A317F2 /* EditProductController.swift */,
+				CFCFE3ED1E0A57E700A317F2 /* ImageCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -282,15 +297,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF66F7AC1E092CC80015B4A7 /* BarcodeViewModel.swift in Sources */,
+				CFCFE3DE1E0A267900A317F2 /* InputQuantityCell.swift in Sources */,
 				CFA894B11E09021D001C70B5 /* ViewController.swift in Sources */,
+				CFCFE3DC1E0A25C400A317F2 /* ChooseTypeCell.swift in Sources */,
 				CF66F7BD1E0933910015B4A7 /* ProtocolTrackActivity.swift in Sources */,
 				CFA894C61E09032B001C70B5 /* Config.swift in Sources */,
+				CFCFE3EE1E0A57E700A317F2 /* ImageCollectionViewCell.swift in Sources */,
 				CF5ED62F1E090A8400B98E43 /* QRCodeReader.swift in Sources */,
 				CFA894AF1E09021D001C70B5 /* AppDelegate.swift in Sources */,
 				CF5ED6311E09117100B98E43 /* BaseController.swift in Sources */,
 				CFA894C41E090320001C70B5 /* Helper.swift in Sources */,
 				CF66F7BC1E0933910015B4A7 /* ActivityIndicator.swift in Sources */,
 				CF66F7AF1E092DB30015B4A7 /* Model.swift in Sources */,
+				CFCFE3DA1E0A251700A317F2 /* ChooseImageCell.swift in Sources */,
+				CFCFE3E21E0A291C00A317F2 /* EditProductController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

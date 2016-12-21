@@ -12,7 +12,7 @@ import RxCocoa
 import RxAlamofire
 import ObjectMapper
 import Alamofire
-
+import ALLoadingView
 let kAllTypes = "kAllTypes"
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        ALLoadingView.manager.blurredBackground = true
         // Get quantityTypes
         dispose = checkQuantityTypes().subscribe(onNext: { [weak self](items) in
             self?.isNeedSave = true

@@ -26,9 +26,9 @@ enum Router {
         case .checkBarcode:
             return .get
         case .createProduct:
-            return .post
+            return .get
         case .updateProduct:
-            return .post
+            return .get
         case .getQuantityTypes:
             return .get
         case .uploadImage:

@@ -40,6 +40,23 @@ class QuantityTypeItem: NSObject, NSCoding, Mappable {
 }
 
 
+struct ProductItem: Mappable {
+    var productId: Int?
+    var barcode: String?
+    var type: String?
+
+    init?(map: Map) {
+        
+    }
+    
+    mutating func mapping(map: Map) {
+        productId <- map["productId"]
+        barcode <- map["barcode"]
+        type <- map["type"]
+    }
+}
+
+
 struct CheckBarcodeItem: Mappable {
     var id: String?
     var barcode: String?
