@@ -11,6 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+
+let appDelegate = UIApplication.shared.delegate as! AppDelegate
 extension Bool {
     var negative: Bool {
         return !self

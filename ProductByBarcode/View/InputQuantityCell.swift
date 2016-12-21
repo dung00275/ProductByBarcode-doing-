@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
-class InputQuantityCell: UITableViewCell {
-    
+class InputQuantityCell: UITableViewCell, InOutValueProtocol {
+    @IBOutlet weak var textField: UITextField!
+    func getValue() -> InOutType {
+        let quantity = Int(textField.text ?? "0") ?? 0
+        return InOutType.quantity(number: quantity)
+    }
 }

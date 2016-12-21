@@ -26,6 +26,8 @@
 		CFCFE3DE1E0A267900A317F2 /* InputQuantityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3DD1E0A267900A317F2 /* InputQuantityCell.swift */; };
 		CFCFE3E21E0A291C00A317F2 /* EditProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3E11E0A291C00A317F2 /* EditProductController.swift */; };
 		CFCFE3EE1E0A57E700A317F2 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3ED1E0A57E700A317F2 /* ImageCollectionViewCell.swift */; };
+		CFCFE3F01E0A6B5E00A317F2 /* PickerTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3EF1E0A6B5E00A317F2 /* PickerTypeViewController.swift */; };
+		CFCFE3F21E0A89AE00A317F2 /* InputManualViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCFE3F11E0A89AE00A317F2 /* InputManualViewController.swift */; };
 		E7910043AA1E9E4CB9969AFC /* Pods_ProductByBarcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CEE9B696725266910869550 /* Pods_ProductByBarcode.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +55,8 @@
 		CFCFE3DD1E0A267900A317F2 /* InputQuantityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputQuantityCell.swift; sourceTree = "<group>"; };
 		CFCFE3E11E0A291C00A317F2 /* EditProductController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProductController.swift; sourceTree = "<group>"; };
 		CFCFE3ED1E0A57E700A317F2 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CFCFE3EF1E0A6B5E00A317F2 /* PickerTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerTypeViewController.swift; sourceTree = "<group>"; };
+		CFCFE3F11E0A89AE00A317F2 /* InputManualViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputManualViewController.swift; sourceTree = "<group>"; };
 		E4FBEA6DAACD98CF81ED933A /* Pods-ProductByBarcode.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProductByBarcode.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProductByBarcode/Pods-ProductByBarcode.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,6 +170,8 @@
 				CFCFE3DD1E0A267900A317F2 /* InputQuantityCell.swift */,
 				CFCFE3E11E0A291C00A317F2 /* EditProductController.swift */,
 				CFCFE3ED1E0A57E700A317F2 /* ImageCollectionViewCell.swift */,
+				CFCFE3EF1E0A6B5E00A317F2 /* PickerTypeViewController.swift */,
+				CFCFE3F11E0A89AE00A317F2 /* InputManualViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -300,10 +306,12 @@
 				CFCFE3DE1E0A267900A317F2 /* InputQuantityCell.swift in Sources */,
 				CFA894B11E09021D001C70B5 /* ViewController.swift in Sources */,
 				CFCFE3DC1E0A25C400A317F2 /* ChooseTypeCell.swift in Sources */,
+				CFCFE3F21E0A89AE00A317F2 /* InputManualViewController.swift in Sources */,
 				CF66F7BD1E0933910015B4A7 /* ProtocolTrackActivity.swift in Sources */,
 				CFA894C61E09032B001C70B5 /* Config.swift in Sources */,
 				CFCFE3EE1E0A57E700A317F2 /* ImageCollectionViewCell.swift in Sources */,
 				CF5ED62F1E090A8400B98E43 /* QRCodeReader.swift in Sources */,
+				CFCFE3F01E0A6B5E00A317F2 /* PickerTypeViewController.swift in Sources */,
 				CFA894AF1E09021D001C70B5 /* AppDelegate.swift in Sources */,
 				CF5ED6311E09117100B98E43 /* BaseController.swift in Sources */,
 				CFA894C41E090320001C70B5 /* Helper.swift in Sources */,

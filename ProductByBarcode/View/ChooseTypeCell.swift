@@ -9,6 +9,17 @@
 import Foundation
 import UIKit
 
-class ChooseTypeCell: UITableViewCell {
+class ChooseTypeCell: UITableViewCell, InOutValueProtocol {
+    
+    @IBOutlet weak var textField: UITextField!
+    var item : QuantityTypeItem? {
+        didSet{
+            self.textField.text = item?.value
+        }
+    }
+    func getValue() -> InOutType {
+        let type = Int(self.item?.value ?? "0") ?? 0
+        return InOutType.quantityType(type: type)
+    }
     
 }

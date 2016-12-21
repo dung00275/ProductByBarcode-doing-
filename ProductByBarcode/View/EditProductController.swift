@@ -62,10 +62,32 @@ class EditProductController: UITableViewController, HandlerErrorController {
     
     let chooseImageSubject: PublishSubject<UIImage?> = PublishSubject()
     let diposeBag = DisposeBag()
+    var currentType: QuantityTypeItem?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Edit Product"
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let controller = segue.destination as? PickerTypeViewController {
+            controller.currentItem = currentType
+            controller.subjectChooseItem.bindNext({ [weak self](item) in
+                self?.currentType = item
+                
+                self?.tableView.reloadRows(at: [IndexPath(item: 2, section: 0)], with: .none)
+            }).addDisposableTo(diposeBag)
+        }
+    }
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let imageCell = cell as? ChooseImageCell {
             imageCell.rootController = self
+        }
+        
+        if let typeInput = cell as? ChooseTypeCell {
+            typeInput.item = self.currentType
         }
         
         return cell
@@ -76,13 +98,22 @@ class EditProductController: UITableViewController, HandlerErrorController {
         switch indexPath.item {
         case 0:
             return 200
-        case 1:
-            return 80
+        default :
+            return 50
+        }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        self.view.endEditing(true)
+        switch indexPath.item {
+        case 2:
+            self.performSegue(withIdentifier: "showPicker", sender: nil)
         default:
             break
         }
         
-        return 44
     }
     
     private func showAlertChoose() -> Observable<ChooseImageType> {
@@ -152,8 +183,6 @@ extension EditProductController {
                     pickerController.dismiss(animated: true, completion: nil)
                 }
             })
-            
-            
         }
         else {
             return showAlertError(message: type.error.localizedDescription).flatMap({ (_)  in
