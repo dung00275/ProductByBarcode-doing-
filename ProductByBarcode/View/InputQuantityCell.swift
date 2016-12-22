@@ -9,10 +9,34 @@
 import Foundation
 import UIKit
 
+enum ErrorCheckInputProduct: Error {
+    case quantity
+    case type
+    case none
+    
+    var localizedDescription: String {
+        switch self {
+        case .quantity:
+            return "Not Input Quantity Yet!!!"
+        case .type:
+            return "Not Input Type Product Yet!!!"
+        case .none:
+            return "Error Unknown!!!"
+        }
+    }
+}
+
 class InputQuantityCell: UITableViewCell, InOutValueProtocol {
     @IBOutlet weak var textField: UITextField!
-    func getValue() -> InOutType {
-        let quantity = Int(textField.text ?? "0") ?? 0
+    func getValue() throws -> InOutType {
+        guard let text = textField.text , text.characters.count > 0 else {
+            throw ErrorCheckInputProduct.quantity
+        }
+        
+        guard let quantity = Int(text) else {
+            throw ErrorCheckInputProduct.quantity
+        }
+        
         return InOutType.quantity(number: quantity)
     }
 }

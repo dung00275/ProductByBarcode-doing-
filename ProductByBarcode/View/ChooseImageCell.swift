@@ -19,7 +19,7 @@ enum InOutType {
 }
 
 protocol InOutValueProtocol {
-    func getValue() -> InOutType
+    func getValue() throws -> InOutType
 }
 
 
@@ -54,7 +54,7 @@ class ChooseImageCell: UITableViewCell, InOutValueProtocol {
         self.collectionView.dataSource = self
     }
     
-    func getValue() -> InOutType {
+    func getValue() throws -> InOutType {
         return InOutType.image(images: images)
     }
     

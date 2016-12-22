@@ -12,12 +12,42 @@ import RxSwift
 import RxCocoa
 import ALLoadingView
 
-extension UIViewController: TrackActivityProtocol{
+
+extension UIViewController: TrackActivityProtocol {
 }
+
+
+protocol DisposeableProtocol: class {
+    var disposeBag: DisposeBag! { get }
+    func handlerError()
+}
+
+extension DisposeableProtocol where Self: UIViewController, Self: TrackActivityProtocol {
+    func setupLoading() {
+        self.trackLoading.asDriver().drive(onNext: { [weak self](isLoading) in
+            guard self != nil else {
+                return
+            }
+            
+            isLoading ? ALLoadingView.manager.showLoadingView(ofType: .messageWithIndicator, windowMode: .windowed) : ALLoadingView.manager.hideLoadingView()
+            
+        }).addDisposableTo(disposeBag)
+    }
+}
+
+extension DisposeableProtocol where Self: HandlerErrorController, Self: UIViewController {
+    func showErrorWith(error: Error) {
+        showAlertError(message: error.localizedDescription).subscribeOn(MainScheduler.instance).bindNext {[weak self] in
+            self?.handlerError()
+            }.addDisposableTo(disposeBag)
+    }
+}
+
 
 public protocol HandlerErrorController {
     func showAlertError(message: String?) -> Observable<Void>
 }
+
 
 public extension HandlerErrorController where Self: UIViewController {
     
@@ -42,27 +72,13 @@ public extension HandlerErrorController where Self: UIViewController {
 }
 
 
-class BaseController: UIViewController, HandlerErrorController {
+class BaseController: UIViewController, HandlerErrorController, DisposeableProtocol {
     
     var disposeBag: DisposeBag! = DisposeBag()
     private lazy var loadingManager = ALLoadingView.manager
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.trackLoading.asDriver().drive(onNext: { [weak self](isLoading) in
-            guard let weakSelf = self else {
-                return
-            }
-            
-            isLoading ? weakSelf.loadingManager.showLoadingView(ofType: .messageWithIndicator, windowMode: .windowed) : weakSelf.loadingManager.hideLoadingView()
-            
-        }).addDisposableTo(disposeBag)
-        
-    }
-    
-    func showErrorWith(error: Error) {
-        showAlertError(message: error.localizedDescription).subscribeOn(MainScheduler.instance).bindNext {[weak self] in
-            self?.handlerError()
-            }.addDisposableTo(disposeBag)
+        setupLoading()
     }
     
     public func handlerError() {

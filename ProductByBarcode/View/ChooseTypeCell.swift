@@ -17,8 +17,13 @@ class ChooseTypeCell: UITableViewCell, InOutValueProtocol {
             self.textField.text = item?.value
         }
     }
-    func getValue() -> InOutType {
-        let type = Int(self.item?.value ?? "0") ?? 0
+    
+    func getValue() throws -> InOutType {
+        guard let value = item?.value  else {
+            throw ErrorCheckInputProduct.type
+        }
+        
+        let type = Int(value) ?? 0
         return InOutType.quantityType(type: type)
     }
     

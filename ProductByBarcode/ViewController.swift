@@ -16,7 +16,7 @@ protocol CheckBarcodeProtocol {
     var barcodeViewModel: BarcodeViewModel { get }
 }
 
-extension CheckBarcodeProtocol where Self: BaseController {
+extension CheckBarcodeProtocol where Self: BaseController, Self: DisposeableProtocol {
     func checkBarcode() {
         barcodeViewModel.checkBarcode(code: code).observeOn(MainScheduler.instance).subscribe(onNext: { [weak self](type) in
             guard type != .none else {
@@ -103,7 +103,7 @@ class ViewController: BaseController, CheckBarcodeProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard reader != nil, reader.isRunning.negative  else {
+        guard reader != nil  else {
             commonInit()
             return
         }

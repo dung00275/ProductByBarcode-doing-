@@ -33,6 +33,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        resetContainer()
     }
     
     func resetContainer() {

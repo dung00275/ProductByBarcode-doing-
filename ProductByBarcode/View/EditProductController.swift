@@ -45,7 +45,7 @@ enum ErrorChooseImage: Error {
 }
 
 extension UIImagePickerControllerSourceType {
-    var error: Error {
+    var error: ErrorChooseImage {
         switch self {
         case .camera:
             return ErrorChooseImage.camera
@@ -58,15 +58,15 @@ extension UIImagePickerControllerSourceType {
 }
 
 
-class EditProductController: UITableViewController, HandlerErrorController {
-    
+class EditProductController: UITableViewController, HandlerErrorController, DisposeableProtocol {
     let chooseImageSubject: PublishSubject<UIImage?> = PublishSubject()
-    let diposeBag = DisposeBag()
+    var disposeBag: DisposeBag! = DisposeBag()
     var currentType: QuantityTypeItem?
     var barcodeType: BarcodeType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLoading()
         self.title = barcodeType.title
         setupSaveButton()
     }
@@ -76,10 +76,52 @@ class EditProductController: UITableViewController, HandlerErrorController {
         saveBtn.tintColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         
         saveBtn.rx.tap.bindNext { (_) in
-            print("abc")
-        }.addDisposableTo(diposeBag)
+            self.checkInputProduct()
+        }.addDisposableTo(disposeBag)
         
         self.navigationItem.rightBarButtonItem = saveBtn
+    }
+    
+    func handlerError() {
+        print("Handler Error")
+    }
+    
+    func checkInputProduct() -> Observable<Void> {
+        let cells = tableView.visibleCells.flatMap({ $0 as? InOutValueProtocol })
+        guard cells.count == 3 else {
+            return Observable.error(ErrorCheckInputProduct.none)
+        }
+        
+        do {
+            
+            try cells.forEach { (input) in
+                let value = try input.getValue()
+                
+                switch value {
+                case .image(let images):
+                    print("image \(images)")
+                case .quantity(let number):
+                    print("quantity \(number)")
+                case .quantityType(let type):
+                   print("type \(type)")
+                }
+            }
+            
+        }catch let err {
+            guard let e = err as? ErrorCheckInputProduct else {
+                return Observable.error(ErrorCheckInputProduct.none)
+            }
+            return Observable.error(e)
+            
+        }
+        
+        
+        
+        return Observable.create({ (r) -> Disposable in
+            
+            
+            return Disposables.create()
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -89,7 +131,7 @@ class EditProductController: UITableViewController, HandlerErrorController {
                 self?.currentType = item
                 
                 self?.tableView.reloadRows(at: [IndexPath(item: 2, section: 0)], with: .none)
-            }).addDisposableTo(diposeBag)
+            }).addDisposableTo(disposeBag)
         }
     }
     

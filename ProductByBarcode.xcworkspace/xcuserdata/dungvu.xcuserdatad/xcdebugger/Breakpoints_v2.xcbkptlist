@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProductByBarcode/View/EditProductController.swift"
-            timestampString = "504073508.774436"
+            timestampString = "504077655.863098"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "EditProductController"
             landmarkType = "3">
          </BreakpointContent>
@@ -41,29 +41,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProductByBarcode/View/ChooseImageCell.swift"
-            timestampString = "503998816.489394"
+            filePath = "ProductByBarcode/View/ImageCollectionViewCell.swift"
+            timestampString = "504074386.476255"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "collectionView(_:cellForItemAt:)"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "setupLongGesture()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProductByBarcode/View/ImageCollectionViewCell.swift"
-            timestampString = "503997639.03601"
+            filePath = "ProductByBarcode/View/EditProductController.swift"
+            timestampString = "504077655.863098"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "setupLongGesture()"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "checkInputProduct()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
