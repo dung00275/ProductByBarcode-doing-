@@ -60,7 +60,7 @@ class ViewController: BaseController, CheckBarcodeProtocol {
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Scan Barcode"
         barcodeViewModel.controller = self
-        setAnimateForStatusLabel()
+        
     }
     
     fileprivate func commonInit() {
@@ -105,6 +105,7 @@ class ViewController: BaseController, CheckBarcodeProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setAnimateForStatusLabel()
         guard reader != nil  else {
             commonInit()
             return
