@@ -116,6 +116,17 @@ class ViewController: BaseController, CheckBarcodeProtocol {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard reader != nil else {
+            return
+        }
+        
+        if reader.isRunning {
+            reader.stopScanning()
+        }
+    }
+    
     
     override func handlerError() {
         print("Handler error")
