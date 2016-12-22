@@ -42,6 +42,8 @@ class ViewController: BaseController, CheckBarcodeProtocol {
     @IBOutlet weak var torchButton: UIButton!
     @IBOutlet weak var lblStatus: UILabel!
     
+    var barcodeType: BarcodeType?
+    
     internal var code: String? {
         didSet {
             if code != nil {

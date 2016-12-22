@@ -19,17 +19,18 @@ extension UIViewController: TrackActivityProtocol {
 
 protocol DisposeableProtocol: class {
     var disposeBag: DisposeBag! { get }
+    var loadingManager: ALLoadingView { get }
     func handlerError()
 }
 
 extension DisposeableProtocol where Self: UIViewController, Self: TrackActivityProtocol {
     func setupLoading() {
-        self.trackLoading.asDriver().drive(onNext: { [weak self](isLoading) in
-            guard self != nil else {
+        self.trackLoading.skip(1).asDriver().drive(onNext: { [weak self](isLoading) in
+            guard let weakSelf = self else {
                 return
             }
             
-            isLoading ? ALLoadingView.manager.showLoadingView(ofType: .messageWithIndicator, windowMode: .windowed) : ALLoadingView.manager.hideLoadingView()
+            isLoading ? weakSelf.loadingManager.showLoadingView(ofType: .messageWithIndicator, windowMode: .windowed) : weakSelf.loadingManager.hideLoadingView()
             
         }).addDisposableTo(disposeBag)
     }
@@ -45,20 +46,20 @@ extension DisposeableProtocol where Self: HandlerErrorController, Self: UIViewCo
 
 
 public protocol HandlerErrorController {
-    func showAlertError(message: String?) -> Observable<Void>
+    func showAlertError(t: String?, message: String?) -> Observable<Void>
 }
 
 
 public extension HandlerErrorController where Self: UIViewController {
     
-    public func showAlertError(message: String?) -> Observable<Void> {
+    public func showAlertError(t: String? = "Error", message: String?) -> Observable<Void> {
         return Observable.create({ [unowned self](r) -> Disposable in
             let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
                 r.onNext()
                 r.onCompleted()
             })
             
-            let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            let alertController = UIAlertController(title: t, message: message, preferredStyle: .alert)
             alertController.addAction(actionOk)
             
             
@@ -73,9 +74,8 @@ public extension HandlerErrorController where Self: UIViewController {
 
 
 class BaseController: UIViewController, HandlerErrorController, DisposeableProtocol {
-    
     var disposeBag: DisposeBag! = DisposeBag()
-    private lazy var loadingManager = ALLoadingView.manager
+    lazy var loadingManager = ALLoadingView.manager
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLoading()

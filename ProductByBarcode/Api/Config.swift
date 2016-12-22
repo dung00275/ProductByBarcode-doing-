@@ -18,8 +18,8 @@ enum Router {
     case createProduct(code: String?)
     case updateProduct(code: String?)
     case getQuantityTypes
-    case uploadImage(fileName: String?, productId: Int)
-    case saveProduct(images: [String], productId: Int, quantity: Int, quantityType: String)
+    case uploadImage(fileName: String?, productId: String)
+    case saveProduct(product: ProductInfo)
     
     var method: HTTPMethod {
         switch self {
@@ -54,11 +54,11 @@ enum Router {
             parameters["action"] = "update"
         case .getQuantityTypes:
             break
-        case .saveProduct(let images,let productId,let quantity,let quantityType):
-            parameters["images"] = images
-            parameters["productId"] = productId
-            parameters["quantity"] = quantity
-            parameters["quantityType"] = quantityType
+        case .saveProduct(let product):
+            parameters["images"] = product.images
+            parameters["productId"] = product.productId
+            parameters["quantity"] = product.quantity
+            parameters["quantityType"] = product.quantityType
         case .uploadImage(let fileName, let productId):
             parameters["fileName"] = fileName
             parameters["productId"] = productId

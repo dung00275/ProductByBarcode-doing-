@@ -50,9 +50,13 @@ struct ProductItem: Mappable {
     }
     
     mutating func mapping(map: Map) {
-        productId <- map["productId"]
+//        productId <- map["productId"]
+        var value: String?
+        value <- map["productId"]
+        productId = Int(value ?? "0")
         barcode <- map["barcode"]
         type <- map["type"]
+        
     }
 }
 

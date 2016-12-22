@@ -28,6 +28,17 @@ enum BarcodeType: Equatable {
             return ""
         }
     }
+    
+    var productId: Int {
+        switch self {
+        case .createNew(let product):
+            return product.productId ?? 0
+        case .update(let product):
+            return product.productId ?? 0
+        default:
+            return 0
+        }
+    }
 }
 
 func ==(l: BarcodeType, r: BarcodeType) -> Bool {

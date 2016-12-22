@@ -23,8 +23,7 @@ class ChooseTypeCell: UITableViewCell, InOutValueProtocol {
             throw ErrorCheckInputProduct.type
         }
         
-        let type = Int(value) ?? 0
-        return InOutType.quantityType(type: type)
+        return InOutType.quantityType(type: value)
     }
     
 }

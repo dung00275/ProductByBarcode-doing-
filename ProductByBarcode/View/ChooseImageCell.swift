@@ -15,7 +15,7 @@ import RxCocoa
 enum InOutType {
     case image(images : [ImagesInfo])
     case quantity(number: Int)
-    case quantityType(type: Int)
+    case quantityType(type: String)
 }
 
 protocol InOutValueProtocol {

@@ -14,6 +14,7 @@
 		CF66F7AF1E092DB30015B4A7 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF66F7AE1E092DB30015B4A7 /* Model.swift */; };
 		CF66F7BC1E0933910015B4A7 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF66F7BA1E0933910015B4A7 /* ActivityIndicator.swift */; };
 		CF66F7BD1E0933910015B4A7 /* ProtocolTrackActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF66F7BB1E0933910015B4A7 /* ProtocolTrackActivity.swift */; };
+		CF739BB01E0BA52100BB6B54 /* EditProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF739BAF1E0BA52100BB6B54 /* EditProductViewModel.swift */; };
 		CFA894AF1E09021D001C70B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA894AE1E09021D001C70B5 /* AppDelegate.swift */; };
 		CFA894B11E09021D001C70B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA894B01E09021D001C70B5 /* ViewController.swift */; };
 		CFA894B41E09021D001C70B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFA894B21E09021D001C70B5 /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 		CF66F7AE1E092DB30015B4A7 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		CF66F7BA1E0933910015B4A7 /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		CF66F7BB1E0933910015B4A7 /* ProtocolTrackActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolTrackActivity.swift; sourceTree = "<group>"; };
+		CF739BAF1E0BA52100BB6B54 /* EditProductViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProductViewModel.swift; sourceTree = "<group>"; };
 		CFA894AB1E09021D001C70B5 /* ProductByBarcode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductByBarcode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA894AE1E09021D001C70B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFA894B01E09021D001C70B5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				CF66F7AB1E092CC80015B4A7 /* BarcodeViewModel.swift */,
+				CF739BAF1E0BA52100BB6B54 /* EditProductViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF739BB01E0BA52100BB6B54 /* EditProductViewModel.swift in Sources */,
 				CF66F7AC1E092CC80015B4A7 /* BarcodeViewModel.swift in Sources */,
 				CFCFE3DE1E0A267900A317F2 /* InputQuantityCell.swift in Sources */,
 				CFA894B11E09021D001C70B5 /* ViewController.swift in Sources */,

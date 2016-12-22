@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import ALLoadingView
 
 enum ChooseImageType: CustomStringConvertible {
     case camera
@@ -26,6 +27,13 @@ enum ChooseImageType: CustomStringConvertible {
             return "Cancel"
         }
     }
+}
+
+struct ProductInfo {
+    let images: [String]
+    let productId: Int
+    let quantity: Int
+    let quantityType: String
 }
 
 enum ErrorChooseImage: Error {
@@ -63,47 +71,92 @@ class EditProductController: UITableViewController, HandlerErrorController, Disp
     var disposeBag: DisposeBag! = DisposeBag()
     var currentType: QuantityTypeItem?
     var barcodeType: BarcodeType!
-    
+    lazy var loadingManager = ALLoadingView()
+    let viewModel = EditProductViewModel()
+    lazy var saveBtn: UIBarButtonItem = {
+        return UIBarButtonItem(title: "Save", style: .plain, target: self, action: nil)
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupLoading()
+        
         self.title = barcodeType.title
         setupSaveButton()
+        loadingManager.blurredBackground = true
+        setupLoading()
+        
     }
     
     func setupSaveButton() {
-        let saveBtn = UIBarButtonItem(title: "Save", style: .plain, target: self, action: nil)
+        saveBtn = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(self.save))
         saveBtn.tintColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-        
-        saveBtn.rx.tap.bindNext { (_) in
-            self.checkInputProduct()
-        }.addDisposableTo(disposeBag)
-        
         self.navigationItem.rightBarButtonItem = saveBtn
+    }
+    
+    func save() {
+        self.checkInputProduct().flatMap { [weak self] p -> Observable<Void> in
+            guard let weakSelf = self else{
+                return Observable.empty()
+            }
+            return weakSelf.viewModel.saveProduct(p: p)
+        }.trackActivity(self.trackLoading).subscribe(onNext: {[weak self] (_) in
+            self?.success()
+        }, onError: { [weak self](err) in
+                self?.showErrorWith(error: err)
+        }).addDisposableTo(disposeBag)
+
+    }
+    
+    func success() {
+        self.showAlertError(t: "Suceess", message: "Product is edited!!!").bindNext {[weak self] in
+           _ = self?.navigationController?.popToRootViewController(animated: true)
+        }.addDisposableTo(disposeBag)
     }
     
     func handlerError() {
         print("Handler Error")
     }
     
-    func checkInputProduct() -> Observable<Void> {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+    }
+    
+    deinit {
+        print("abc")
+    }
+    
+    func checkInputProduct() -> Observable<ProductInfo> {
         let cells = tableView.visibleCells.flatMap({ $0 as? InOutValueProtocol })
         guard cells.count == 3 else {
             return Observable.error(ErrorCheckInputProduct.none)
         }
         
+        var arrImage: [ImagesInfo] = []
+        let productId = barcodeType.productId
+        var quantity: Int = 0
+        var quantityType: String = ""
+        // Check productID
+        guard productId != 0 else {
+            return Observable.error(ErrorCheckInputProduct.none)
+        }
+        
+        // Get Value
         do {
-            
             try cells.forEach { (input) in
                 let value = try input.getValue()
                 
                 switch value {
                 case .image(let images):
-                    print("image \(images)")
+                    arrImage += images
                 case .quantity(let number):
-                    print("quantity \(number)")
+                    quantity = number
                 case .quantityType(let type):
-                   print("type \(type)")
+                    quantityType = type
                 }
             }
             
@@ -112,16 +165,23 @@ class EditProductController: UITableViewController, HandlerErrorController, Disp
                 return Observable.error(ErrorCheckInputProduct.none)
             }
             return Observable.error(e)
-            
         }
         
-        
-        
-        return Observable.create({ (r) -> Disposable in
-            
-            
-            return Disposables.create()
-        })
+        if arrImage.count == 0 {
+            let info = ProductInfo(images: [],
+                                   productId: productId,
+                                   quantity: quantity,
+                                   quantityType: quantityType)
+            return Observable.just(info)
+        }else {
+            return viewModel.uploadImages(images: arrImage, with: "\(productId)").map({
+                let info = ProductInfo(images: $0,
+                                       productId: productId,
+                                       quantity: quantity,
+                                       quantityType: quantityType)
+                return info
+            })
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -214,7 +274,7 @@ extension EditProductController {
     
     fileprivate func showPickerChoose(type : UIImagePickerControllerSourceType) -> Observable<ImagesInfo> {
         if UIImagePickerController.isSourceTypeAvailable(type) {
-            
+            let productId = self.barcodeType.productId
             return Observable.create({ [unowned self](r) -> Disposable in
                 let pickerController = UIImagePickerController()
                 pickerController.sourceType = type
@@ -222,7 +282,15 @@ extension EditProductController {
                 
                 _ = pickerController.rx.didFinishPickingMediaWithInfo.bindNext({(d) in
                     let image = d[UIImagePickerControllerEditedImage] as? UIImage
-                    let info = ImagesInfo(image: image, path: nil)
+                    var url: URL?
+                    if let i = image {
+                        let d = UIImageJPEGRepresentation(i, 0.3)
+                        let local = URL.cacheDirectory()!.appendingPathComponent("\(productId)_\(Date().timeIntervalSince1970).jpg")
+                        try? d?.write(to: local)
+                        url = local
+                    }
+                    
+                    let info = ImagesInfo(image: image, path: url)
                     
                     r.onNext(info)
                     r.onCompleted()
