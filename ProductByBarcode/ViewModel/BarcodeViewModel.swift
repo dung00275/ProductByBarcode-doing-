@@ -13,15 +13,39 @@ import RxAlamofire
 import Alamofire
 import ObjectMapper
 
-enum BarcodeType {
+enum BarcodeType: Equatable {
     case none
     case createNew(product: ProductItem)
     case update(product: ProductItem)
+    
+    var title: String {
+        switch self {
+        case .createNew:
+            return "Add New Product"
+        case .update:
+            return "Update Product"
+        default:
+            return ""
+        }
+    }
+}
+
+func ==(l: BarcodeType, r: BarcodeType) -> Bool {
+    switch (l, r) {
+    case (.none, .none):
+        return true
+    case (.createNew(let p1), .createNew(let p2)):
+        return p1.productId == p2.productId
+    case (.update(let p1), .update(let p2)):
+       return p1.productId == p2.productId
+    default:
+        return false
+    }
 }
 
 struct BarcodeViewModel {
     weak var controller: BaseController!
-    func checkBarcode(code: String?) -> Observable<[CheckBarcodeItem]> {
+    func checkBarcode(code: String?) -> Observable<BarcodeType> {
         let router = Router.checkBarcode(code: code)
         return SessionManager.default.rx.json(router.method, router.path, parameters: router.params).map { (r) -> [CheckBarcodeItem] in
             
@@ -31,7 +55,9 @@ struct BarcodeViewModel {
             let mapper = Mapper<CheckBarcodeItem>()
             return items.flatMap({ mapper.map(JSONObject: $0) })
             
-        }.catchErrorJustReturn([]).trackActivity(controller.trackLoading)
+            }.flatMap({
+                $0.count == 0 ? self.createNew(code: code) : self.updateProduct(code: code)
+            }).trackActivity(controller.trackLoading)
     }
     
     func createNew(code: String?) -> Observable<BarcodeType> {

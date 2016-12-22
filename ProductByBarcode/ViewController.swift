@@ -10,7 +10,31 @@ import UIKit
 import RxSwift
 import RxCocoa
 import ALLoadingView
-class ViewController: BaseController {
+
+protocol CheckBarcodeProtocol {
+    var code: String? { get }
+    var barcodeViewModel: BarcodeViewModel { get }
+}
+
+extension CheckBarcodeProtocol where Self: BaseController {
+    func checkBarcode() {
+        barcodeViewModel.checkBarcode(code: code).observeOn(MainScheduler.instance).subscribe(onNext: { [weak self](type) in
+            guard type != .none else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self?.performSegue(withIdentifier: "showEdit", sender: type)
+            }
+        
+        }, onError: { [weak self](err) in
+            self?.showErrorWith(error: err)
+        }).addDisposableTo(disposeBag)
+    }
+}
+
+
+class ViewController: BaseController, CheckBarcodeProtocol {
 
     fileprivate var reader: QRCodeReader!
     @IBOutlet weak var cameraContainer: UIView!
@@ -18,16 +42,12 @@ class ViewController: BaseController {
     @IBOutlet weak var torchButton: UIButton!
     @IBOutlet weak var lblStatus: UILabel!
     
-    fileprivate var code: String? {
+    internal var code: String? {
         didSet {
             if code != nil {
                 if reader != nil { reader.didFindCode = nil }
                 
-                barcodeViewModel.checkBarcode(code: code).subscribe(onNext: { (_) in
-                    print("abc")
-                }, onError: { [weak self](err) in
-                    self?.showErrorWith(error: err)
-                }).addDisposableTo(disposeBag)
+                self.checkBarcode()
             }
         }
     }
@@ -88,6 +108,7 @@ class ViewController: BaseController {
             return
         }
         if !reader.isRunning {
+            setupHandlerFindCode()
             reader.startScanning()
         }
     }
@@ -95,7 +116,19 @@ class ViewController: BaseController {
     
     override func handlerError() {
         print("Handler error")
+        guard reader != nil else {
+            return
+        }
+        setupHandlerFindCode()
+        reader.startScanning()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let controller = segue.destination as? EditProductController, let type = sender as? BarcodeType else {
+            return
+        }
         
+        controller.barcodeType = type
     }
     
     override func didReceiveMemoryWarning() {

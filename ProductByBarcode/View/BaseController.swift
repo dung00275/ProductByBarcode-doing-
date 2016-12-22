@@ -53,7 +53,7 @@ class BaseController: UIViewController, HandlerErrorController {
                 return
             }
             
-            isLoading ? weakSelf.loadingManager.showLoadingView(ofType: .messageWithIndicator, windowMode: .fullscreen) : weakSelf.loadingManager.hideLoadingView()
+            isLoading ? weakSelf.loadingManager.showLoadingView(ofType: .messageWithIndicator, windowMode: .windowed) : weakSelf.loadingManager.hideLoadingView()
             
         }).addDisposableTo(disposeBag)
         

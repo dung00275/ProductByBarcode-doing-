@@ -63,9 +63,23 @@ class EditProductController: UITableViewController, HandlerErrorController {
     let chooseImageSubject: PublishSubject<UIImage?> = PublishSubject()
     let diposeBag = DisposeBag()
     var currentType: QuantityTypeItem?
+    var barcodeType: BarcodeType!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Edit Product"
+        self.title = barcodeType.title
+        setupSaveButton()
+    }
+    
+    func setupSaveButton() {
+        let saveBtn = UIBarButtonItem(title: "Save", style: .plain, target: self, action: nil)
+        saveBtn.tintColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        
+        saveBtn.rx.tap.bindNext { (_) in
+            print("abc")
+        }.addDisposableTo(diposeBag)
+        
+        self.navigationItem.rightBarButtonItem = saveBtn
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

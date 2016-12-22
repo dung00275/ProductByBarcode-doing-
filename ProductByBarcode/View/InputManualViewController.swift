@@ -11,20 +11,28 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class InputManualViewController: BaseController {
+class InputManualViewController: BaseController, CheckBarcodeProtocol {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var btnCheck: UIButton!
     
+    internal var code: String? {
+        didSet {
+            if code != nil {
+                self.checkBarcode()
+            }
+        }
+    }
+    var barcodeViewModel = BarcodeViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        barcodeViewModel.controller = self
         textField.rx.text.asObservable().map({
             ($0 ?? "").characters.count > 5
         }).bindTo(btnCheck.rx.isEnabled).addDisposableTo(disposeBag)
         
         btnCheck.rx.tap.bindNext {[unowned self] in
-            print("Tap!!!!!")
-            self.performSegue(withIdentifier: "showEdit", sender: nil)
+            self.code = self.textField.text
         }.addDisposableTo(disposeBag)
         
         NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillShow).bindNext {[weak self] (notify) in
@@ -54,6 +62,14 @@ class InputManualViewController: BaseController {
             
             }.addDisposableTo(disposeBag)
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let controller = segue.destination as? EditProductController, let type = sender as? BarcodeType else {
+            return
+        }
+        
+        controller.barcodeType = type
     }
     
     override func viewWillDisappear(_ animated: Bool) {
